@@ -1,28 +1,27 @@
-version: '3'
+version: '3.7'
 
 services:
-  postgresql:
-    container_name: postgresql
-    image: postgres:14
+  auth_db:
+    image: 'postgres:14-alpine'
+    container_name: auth_db
+    user: root
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - "8083:5432"
-    restart: always
-    networks:
-      - app-network
-  app:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+#    volumes:
+#      - ./volumes/db/auth:/var/lib/postgresql/data
+    restart: on-failure
+  auth:
     image: vadim2422/foco_auth
-    container_name: foco_auth
-    ports:
-      - "8081:8080"
+    container_name: auth
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth_db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - postgresql
-    restart: always
-    networks:
-      - app-network
+      - auth_db
+    restart: on-failure
+    ports:
+      - "8085:8080"
 
-networks:
-  app-network:
-    driver: bridge
