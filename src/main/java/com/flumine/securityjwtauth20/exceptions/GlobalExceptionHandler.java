@@ -23,6 +23,11 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
+    public ResponseEntity<?> catchBadTokenException (BadTokenException e) {
+        return ResponseEntity.status(403).build();
+    }
+
+    @ExceptionHandler
     public ResponseEntity<?> catchResourceNotFoundException (ResourceNotFoundException e) {
         Map<String, AppError> str = new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()).toJSON();
         AppError appError = new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage());

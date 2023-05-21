@@ -1,20 +1,18 @@
 package com.flumine.securityjwtauth20.auth;
 
-import com.flumine.securityjwtauth20.models.ERole;
+import com.flumine.securityjwtauth20.models.DeviceModel;
+import com.flumine.securityjwtauth20.models.UserModel;
 import com.flumine.securityjwtauth20.services.AuthenticationService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,7 +51,7 @@ public class AuthenticationController {
         {
             System.out.println(e.getMessage());
         }
-        response.sendRedirect("");
+        response.sendRedirect("http://localhost/");
     }
 
 
@@ -63,5 +61,36 @@ public class AuthenticationController {
 
     return ResponseEntity.ok(service.create_tokens(service.get_user_from_request(request)));
   }
+
+    @PostMapping("/add_device")
+    public ResponseEntity<?> add_device(HttpServletRequest request, @RequestBody DeviceModel device) {
+
+        UserModel user = service.get_user_from_request(request);
+        device.setUserid(user.getId());
+        service.add_device(device);
+        return ResponseEntity.status(201).build();
+    }
+
+    @GetMapping("/get_device")
+    public ResponseEntity<?> get_device(HttpServletRequest request) {
+
+        UserModel user = service.get_user_from_request(request);
+        List<DeviceModel> device = service.get_device(user.getId());
+
+
+        return ResponseEntity.status(200).body(device);
+    }
+
+    @GetMapping("/add_type_device")
+    public ResponseEntity<?> add_type_device(HttpServletRequest request, @RequestParam("device") Long device_id,
+                                             @RequestParam("type") String type) {
+
+//        UserModel user = service.get_user_from_request(request);
+       service.add_type_device(device_id, type);
+
+
+        return ResponseEntity.status(200).build();
+    }
+
 }
 

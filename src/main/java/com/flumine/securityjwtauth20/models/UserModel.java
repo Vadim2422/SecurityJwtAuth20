@@ -22,7 +22,7 @@ public class UserModel implements UserDetails {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(unique = true, nullable = false)
@@ -36,16 +36,22 @@ public class UserModel implements UserDetails {
     @Builder.Default
     private Boolean enabled = false;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleModel> roles = new HashSet<>();
 
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Set<RoleModel> roles = new HashSet<>();
+
+    public UserModel(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return new HashSet<>();
     }
 
     @Override

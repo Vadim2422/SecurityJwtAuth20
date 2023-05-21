@@ -30,8 +30,6 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/refresh_token").authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .oauth2Login()
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

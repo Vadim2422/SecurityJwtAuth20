@@ -56,25 +56,25 @@ public class ApplicationConfig {
     }
 
 
-    @Bean
-    public void addRole() {
-        roleRepository.save(new RoleModel(ERole.ROLE_USER));
-        roleRepository.save(new RoleModel(ERole.ROLE_ADMIN));
-        roleRepository.save(new RoleModel(ERole.ROLE_SUDO));
-    }
+//    @Bean
+//    public void addRole() {
+//        if (!roleRepository.existsByRole(ERole.ROLE_USER)) roleRepository.save(new RoleModel(ERole.ROLE_USER));
+//        if (!roleRepository.existsByRole(ERole.ROLE_ADMIN)) roleRepository.save(new RoleModel(ERole.ROLE_ADMIN));
+//        if (!roleRepository.existsByRole(ERole.ROLE_SUDO)) roleRepository.save(new RoleModel(ERole.ROLE_SUDO));
+//    }
 
 //    @Bean
-    public void add_sudo() {
-        RoleModel sudo_role = roleRepository.findByRole(ERole.ROLE_SUDO).orElse(new RoleModel());
-        UserModel user =
-                UserModel.builder().username("vadim2422").email("breev.vadim@yandex.ru").password(passwordEncoder().encode("123")).roles(new HashSet<>() {{add(sudo_role);}}).build();
-        userRepository.save(user);
-    }
+//    public void add_sudo() {
+//        RoleModel sudo_role = roleRepository.findByRole(ERole.ROLE_SUDO).orElse(new RoleModel());
+//        UserModel user =
+//                UserModel.builder().username("vadim2422").email("breev.vadim@yandex.ru").password(passwordEncoder().encode("123")).roles(new HashSet<>() {{add(sudo_role);}}).build();
+//        userRepository.save(user);
+//    }
 
 //    @Bean
     public void add_user() {
-        RoleModel user_role = roleRepository.findByRole(ERole.ROLE_USER).orElse(new RoleModel());
-        UserModel user = UserModel.builder().username("0").email("3").password(passwordEncoder().encode("4")).roles(new HashSet<>() {{add(user_role);}}).build();
+//        RoleModel user_role = roleRepository.findByRole(ERole.ROLE_USER).orElse(new RoleModel());
+        UserModel user = UserModel.builder().username("foco").email("breev.vadim@yandex.ruu").password(passwordEncoder().encode("1234")).enabled(Boolean.TRUE).build();
         userRepository.save(user);
     }
 
